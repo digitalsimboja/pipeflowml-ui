@@ -17,7 +17,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex overflow-hidden justify-around z-[1000] items-center md:px-10 py-2 px-3 cursor-pointer w-full ease-in-out transition-all relative">
+    <nav className="flex  justify-around  items-center md:px-10 py-2 px-3 cursor-pointer w-full ease-in-out transition-all relative">
       <Link href="/">
         <Image
           width={120}
@@ -27,27 +27,29 @@ const Navbar = () => {
         />
       </Link>
 
-      {/* Desktop Menu */}
       <div className="hidden md:flex justify-between gap-8 items-center font-bold relative">
-        <div className="relative group flex items-center">
+        <div className="relative group flex items-center z-[1000]">
           <Link href="">Solutions</Link>
           <IoChevronDownSharp className="ml-1 transform -translate-y-0.2 text-white" />
-          <div className="absolute hidden top-full left-0  group-hover:block bg-white text-black border border-gray-300 shadow-md p-4 rounded-md w-[500px] grid grid-cols-3 gap-4">
-            <Link href="/solution1" className="block mb-2 text-black">
-              Solution 1
-            </Link>
-            <Link href="/solution2" className="block mb-2">
-              Solution 2
-            </Link>
-            <Link href="/solution3" className="block mb-2">
-              Solution 3
-            </Link>
-            {/* Add more links as needed */}
+          <div className="absolute opacity-0 bg-white text-black z-[1000]  top-full left-0 group-hover:opacity-80 border border-gray-300 shadow-md p-4 rounded-md w-[500px] h-[300px] grid grid-cols-3 gap-4 transition-opacity duration-300">
+            <div className="flex flex-col space-y-4">
+              <h1>Virtual Assistants</h1>
+            </div>
+            <div className="flex flex-col space-y-4">
+              <h1>Virtual agents</h1>
+              
+            </div>
+            <div className="flex flex-col space-y-4">
+              <h1>Virtual agents</h1>
+            </div>
           </div>
         </div>
-
-        <Link href="/pricing">Pricing</Link>
-        <Link href="/contact">Contact us</Link>
+        <Link href="/pricing" className="text-white">
+          Pricing
+        </Link>
+        <Link href="/contact" className="text-white">
+          Contact us
+        </Link>
       </div>
 
       <div className="flex justify-between font-bold gap-4">
