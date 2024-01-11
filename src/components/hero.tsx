@@ -1,4 +1,6 @@
 import Image from "next/image";
+import GetStartedButton from "./common/getStartedButton";
+import LiveDemoButton from "./common/liveDemoButton";
 
 const Hero = () => {
   return (
@@ -11,6 +13,10 @@ const Hero = () => {
           Create and Deploy custom AI Agents, Chatbots and Virtual Assistants
           using your business content.
         </p>
+        <div className="flex gap-4">
+          <GetStartedButton text="Get Started" />
+         <LiveDemoButton text="Live Demo" />
+        </div>
       </div>
       <div className="flex-shrink-0">
         <Image
