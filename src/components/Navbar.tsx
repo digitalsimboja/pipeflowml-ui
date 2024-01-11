@@ -31,16 +31,36 @@ const Navbar = () => {
         <div className="relative group flex items-center z-[1000]">
           <Link href="">Solutions</Link>
           <IoChevronDownSharp className="ml-1 transform -translate-y-0.2 text-white" />
-          <div className="absolute opacity-0 bg-white text-black z-[1000]  top-full left-0 group-hover:opacity-80 border border-gray-300 shadow-md p-4 rounded-md w-[500px] h-[300px] grid grid-cols-3 gap-4 transition-opacity duration-300">
-            <div className="flex flex-col space-y-4">
-              <h1>Virtual Assistants</h1>
+          <div className="absolute opacity-0 bg-white  z-[1000]  top-full left-0 group-hover:opacity-80 border border-gray-300 shadow-md p-4 rounded-md w-[600px] h-[300px] grid grid-cols-3 gap-8 transition-opacity duration-300">
+            <div className="flex flex-col space-y-4 ">
+              <h1 className="text-gray-500 uppercase">Features</h1>
+              <ul className="text-black space-y-2">
+                <li>
+                  <i className="fas fa-robot"></i> Deploy Custom GPT Chatbots
+                </li>
+                <li>
+                  <i className="fas fa-android"></i> AI Assistants
+                </li>
+                <li>
+                  <i className="fas fa-user-secret"></i> Virtual Agents
+                </li>
+              </ul>
             </div>
             <div className="flex flex-col space-y-4">
-              <h1>Virtual agents</h1>
-              
+              <h1 className="text-gray-500 uppercase">Use case</h1>
+              <ul className="text-black space-y-2">
+                <li>Sales Agent</li>
+                <li>Customer service agents</li>
+                <li>Video Assistants</li>
+              </ul>
             </div>
             <div className="flex flex-col space-y-4">
-              <h1>Virtual agents</h1>
+              <h1 className="text-gray-500 uppercase">Industry</h1>
+              <ul className="text-black space-y-2">
+                <li>Metaverse Platforms</li>
+                <li>e-Commerce</li>
+                <li>Content distribution Networks</li>
+              </ul>
             </div>
           </div>
         </div>
