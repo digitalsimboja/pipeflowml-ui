@@ -4,28 +4,30 @@ import LiveDemoButton from "./common/liveDemoButton";
 
 const Hero = () => {
   return (
-    <div className="mt-16 py-2 px-4 flex justify-around items-center relative z-0">
-      <div className="flex flex-col justify-center md:max-w-xl">
-        <h1 className="text-4xl md:text-7xl font-bold mb-4 whitespace-pre-line leading-tight">
+    <div className="mt-8 px-4 flex flex-col items-center">
+      <div className="flex flex-col items-center mb-4">
+        <h1 className="text-2xl md:text-4xl lg:text-7xl font-bold mb-2 text-center">
           Evveland AI, Generative AI Platform for the Metaverse
         </h1>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 text-center">
           Create and Deploy custom AI Agents, Chatbots and Virtual Assistants
           using your business content.
         </p>
-        <div className="flex gap-4">
-          <GetStartedButton text="Get Started" />
-         <LiveDemoButton text="Live Demo" />
-        </div>
       </div>
-      <div className="flex-shrink-0">
+      <div className="flex flex-col items-center mb-4">
         <Image
-          width={600}
-          height={600}
+          width={300}
+          height={300}
           src="/images/hero_image.png"
           alt="Evveland AI platform Landing page image"
           className="w-full border-none rounded"
         />
+      </div>
+      <div className="flex flex-col items-center mb-4">
+        <div className="flex flex-col items-center gap-4">
+          <GetStartedButton text="Get Started" />
+          <LiveDemoButton text="Live Demo" />
+        </div>
       </div>
     </div>
   );
