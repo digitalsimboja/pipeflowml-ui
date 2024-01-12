@@ -104,7 +104,7 @@ const Navbar = () => {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="fixed top-0 right-0 bg-gray-500 overflow-hidden transition-transform transform w-64">
+        <div className="fixed top-0 right-0 bg-gray-500 overflow-hidden transition-transform transform w-64 z-[1000]">
           <div className="absolute top-4 right-4">
             <FaTimes
               className="text-black cursor-pointer"
