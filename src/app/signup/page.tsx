@@ -14,8 +14,8 @@ const Signup = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="w-[500px] flex flex-col p-4">
-        <div className="flex items-center justify-center mb-2">
+      <div className="w-full md:w-[500px] flex flex-col p-4">
+        <div className="flex items-center justify-center mb-4">
           <Link href="/">
             <Image
               width={200}
@@ -25,16 +25,16 @@ const Signup = () => {
             />
           </Link>
         </div>
-        <div className="gp-4 mb-4">
-          <h1 className="font-bold text-2xl mb-2">Signup</h1>
-          <div className="flex gap-2">
-            <p>Already have an account yet? </p>{" "}
+        <div className="mb-4">
+          <h1 className="font-bold text-2xl mb-2 text-center">Signup</h1>
+          <div className="flex flex-col gap-2 text-center">
+            <p>Already have an account? </p>{" "}
             <Link href="/login" className="text-blue-900 font-bold">
               Login
             </Link>
           </div>
         </div>
-        <div className="mb-4 p-8 bg-white rounded-md shadow-md w-[500px]">
+        <div className="mb-4 p-4 bg-white rounded-md shadow-md">
           <form className="flex flex-col">
             <label
               htmlFor="email"
@@ -49,7 +49,7 @@ const Signup = () => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border rounded-md p-2 mb-4 w-full"
+              className="border rounded-md p-2 mb-2 w-full"
             />
             <label
               htmlFor="password"
@@ -63,7 +63,7 @@ const Signup = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="border p-2 mb-4 rounded-md w-full"
+              className="border p-2 mb-2 rounded-md w-full"
             />
             <label
               htmlFor="confirmPassword"
@@ -77,11 +77,11 @@ const Signup = () => {
               name="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="border p-2 mb-4 rounded-md w-full"
+              className="border p-2 mb-2 rounded-md w-full"
             />
             <div className="flex items-center justify-center">
               <button
-                className="border p-2 rounded-md w-[80%] bg-blue-100 text-black tracking-wide text-xl font-bold"
+                className="border p-2 rounded-md w-full bg-blue-100 text-black tracking-wide text-xl font-bold"
                 onClick={handleSignup}
               >
                 Signup
