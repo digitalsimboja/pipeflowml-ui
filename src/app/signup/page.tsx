@@ -4,12 +4,22 @@ import Link from "next/link";
 import { useState } from "react";
 
 const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const handleSignup = () => {
-    console.log(email + password);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+  const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); 
+    console.log(formData);
+    // Add your signup logic here
   };
 
   return (
@@ -35,7 +45,7 @@ const Signup = () => {
           </div>
         </div>
         <div className="mb-4 p-4 bg-white rounded-md shadow-md">
-          <form className="flex flex-col">
+          <form className="flex flex-col" onSubmit={handleSignup}>
             <label
               htmlFor="email"
               className="text-sm font-medium text-gray-600 block mb-2"
@@ -47,8 +57,8 @@ const Signup = () => {
               type="email"
               name="email"
               placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleInputChange}
               className="border rounded-md p-2 mb-2 w-full"
             />
             <label
@@ -61,8 +71,8 @@ const Signup = () => {
               type="password"
               name="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleInputChange}
               className="border p-2 mb-2 rounded-md w-full"
             />
             <label
@@ -75,14 +85,15 @@ const Signup = () => {
               type="password"
               placeholder="Confirm Password"
               name="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
               className="border p-2 mb-2 rounded-md w-full"
             />
             <div className="flex items-center justify-center">
               <button
+              type="submit"
                 className="border p-2 rounded-md w-full bg-blue-100 text-black tracking-wide text-xl font-bold"
-                onClick={handleSignup}
+               
               >
                 Signup
               </button>
