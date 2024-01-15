@@ -26,8 +26,8 @@ const Login = () => {
         </div>
         <div className="mb-4">
           <h1 className="font-bold text-2xl mb-2 text-center">Login</h1>
-          <div className="flex flex-col gap-2 text-center">
-            <p>Don't have an account yet? </p>{" "}
+          <div className="flex flex-row px-2 gap-2 text-center">
+            <p>Don't have an account yet? </p>
             <Link href="/signup" className="text-blue-900 font-bold">
               Sign up
             </Link>
