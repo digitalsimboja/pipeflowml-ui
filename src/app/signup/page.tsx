@@ -23,35 +23,60 @@ const Signup = () => {
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      return;
-    } else {
-      const response = await fetch("/api/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        router.push("/dashboard");
-      } else {
-        console.error("Error signing up: ");
+    // Check for empty input fields
+    const emptyField = Object.entries(formData).find(
+      ([key, value]) => value.trim() === ""
+    );
+
+    if (emptyField) {
+      // Focus on the first empty input field
+      const [fieldName] = emptyField;
+      const inputElement = document.querySelector(
+        `input[name="${fieldName}"]`
+      ) as HTMLInputElement;
+
+      if (inputElement) {
+        inputElement.focus();
       }
+
+      return;
+    }
+
+    const isEmailValid = isValidEmail(formData.email);
+    const doPasswordsMatch = formData.password === formData.confirmPassword;
+
+    if (!isEmailValid || !doPasswordsMatch) {
+      return;
+    }
+
+    const response = await fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    if (response.ok) {
+      router.push("/dashboard");
+    } else {
+      console.error("Error signing up: ");
     }
   };
 
   const MaybeRenderPasswordOrEmailError = () => {
     const emailTouched = formData.email.length > 0;
     const passwordTouched = formData.password.length > 0;
-  
+
     if (!isValidEmail(formData.email) && emailTouched) {
       return (
         <div className="text-red-500">
           <p>Please enter a valid email address.</p>
         </div>
       );
-    } else if (formData.password !== formData.confirmPassword && passwordTouched) {
+    } else if (
+      formData.password !== formData.confirmPassword &&
+      passwordTouched
+    ) {
       return (
         <div className="text-red-500">
           <p>Passwords must match.</p>
@@ -61,7 +86,6 @@ const Signup = () => {
       return null;
     }
   };
-  
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -141,6 +165,7 @@ const Signup = () => {
           </form>
         </div>
       </div>
+
       <MaybeRenderPasswordOrEmailError />
     </div>
   );
