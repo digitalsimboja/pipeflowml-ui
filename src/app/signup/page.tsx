@@ -1,7 +1,9 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { isValidEmail } from "src/utils/isValidEmail";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -10,17 +12,56 @@ const Signup = () => {
     confirmPassword: "",
   });
 
+  const router = useRouter();
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [e.target.name]: e.target.value,
     }));
   };
-  const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
-    console.log(formData);
-    // Add your signup logic here
+
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      return;
+    } else {
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        router.push("/dashboard");
+      } else {
+        console.error("Error signing up: ");
+      }
+    }
   };
+
+  const MaybeRenderPasswordOrEmailError = () => {
+    const emailTouched = formData.email.length > 0;
+    const passwordTouched = formData.password.length > 0;
+  
+    if (!isValidEmail(formData.email) && emailTouched) {
+      return (
+        <div className="text-red-500">
+          <p>Please enter a valid email address.</p>
+        </div>
+      );
+    } else if (formData.password !== formData.confirmPassword && passwordTouched) {
+      return (
+        <div className="text-red-500">
+          <p>Passwords must match.</p>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+  
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -91,9 +132,8 @@ const Signup = () => {
             />
             <div className="flex items-center justify-center">
               <button
-              type="submit"
+                type="submit"
                 className="border p-2 rounded-md w-full bg-blue-100 text-black tracking-wide text-xl font-bold"
-               
               >
                 Signup
               </button>
@@ -101,6 +141,7 @@ const Signup = () => {
           </form>
         </div>
       </div>
+      <MaybeRenderPasswordOrEmailError />
     </div>
   );
 };
