@@ -1,0 +1,23 @@
+schema:
+  - graphql/schema.graphql
+generates:
+  src/GraphQLTypesForServer.tsx:
+    documents: graphql/**/*.graphql
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHOC: false
+      scalars:
+        DateTime: string
+  src/GraphQLComponents.tsx:
+    documents: graphql/**/*.graphql
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHOC: false
+      scalars:
+        DateTime: string

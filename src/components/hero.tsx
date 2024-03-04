@@ -2,7 +2,10 @@ import Image from "next/image";
 import GetStartedButton from "./common/getStartedButton";
 import LiveDemoButton from "./common/liveDemoButton";
 
+
 const Hero = () => {
+
+
   return (
     <div className="mt-16 px-4 py-8 md:flex md:justify-around items-center relative z-0">
       <div className="max-w-xl text-left mb-8 md:mb-0">

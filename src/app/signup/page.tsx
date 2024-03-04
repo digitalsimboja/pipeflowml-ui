@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { isValidEmail } from "src/utils/isValidEmail";
 
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",

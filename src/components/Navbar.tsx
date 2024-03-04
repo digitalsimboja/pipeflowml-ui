@@ -70,6 +70,9 @@ const Navbar = () => {
         <Link href="/contact" className="text-white">
           Contact us
         </Link>
+        <Link href="/tools" className="text-white">
+          Tools
+        </Link>
       </div>
 
       <div className="flex justify-between font-bold gap-4">

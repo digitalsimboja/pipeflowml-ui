@@ -9,8 +9,6 @@ export default async function signUpHandler(req: NextApiRequest, res: NextApiRes
     try {
       let formData = req.body;
       delete formData.confirmPassword;
-      const hashedPassword = await bcrypt.hash(formData.password, saltRounds)
-      formData.password = hashedPassword
       // Check if the user with the email already exists
       console.log(formData)
       res.status(200).json({ message: "User created succesfully" });
