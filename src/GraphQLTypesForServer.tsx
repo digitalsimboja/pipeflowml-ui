@@ -224,6 +224,13 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'SignUpUserResponse', sessionToken: string } };
 
+export type SignInUserMutationVariables = Exact<{
+  data: SignInUserInput;
+}>;
+
+
+export type SignInUserMutation = { __typename?: 'Mutation', signInUser: { __typename?: 'SignInUserResponse', sessionToken: string } };
+
 
 export const SignUpDocument = gql`
     mutation SignUp($data: SignUpUserInput!) {
@@ -258,3 +265,36 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const SignInUserDocument = gql`
+    mutation SignInUser($data: SignInUserInput!) {
+  signInUser(data: $data) {
+    sessionToken
+  }
+}
+    `;
+export type SignInUserMutationFn = Apollo.MutationFunction<SignInUserMutation, SignInUserMutationVariables>;
+
+/**
+ * __useSignInUserMutation__
+ *
+ * To run a mutation, you first call `useSignInUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signInUserMutation, { data, loading, error }] = useSignInUserMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useSignInUserMutation(baseOptions?: Apollo.MutationHookOptions<SignInUserMutation, SignInUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignInUserMutation, SignInUserMutationVariables>(SignInUserDocument, options);
+      }
+export type SignInUserMutationHookResult = ReturnType<typeof useSignInUserMutation>;
+export type SignInUserMutationResult = Apollo.MutationResult<SignInUserMutation>;
+export type SignInUserMutationOptions = Apollo.BaseMutationOptions<SignInUserMutation, SignInUserMutationVariables>;

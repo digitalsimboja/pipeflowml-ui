@@ -52,7 +52,7 @@ const Signup = () => {
       return;
     }
 
-    const response = await signUp(formData)
+    const response = await signUp()
     if (response?.sessionToken) {
       // Store the sessionToken  in localStorage and redirect to Dashboard page
       localStorage.setItem("token",response.sessionToken)
@@ -62,7 +62,7 @@ const Signup = () => {
     }
   };
 
-  const signUp = async (data: SignInUserInput) => {
+  const signUp = async () => {
     try {
       const {data} = await signUpMutation({
         variables: {
