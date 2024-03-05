@@ -3,10 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { SignInUserInput, SignUpMutationVariables, useSignUpMutation } from "src/GraphQLComponents";
 import { isValidEmail } from "src/utils/isValidEmail";
 
 
 const Signup = () => {
+  const [signUpMutation] = useSignUpMutation()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -50,19 +52,36 @@ const Signup = () => {
       return;
     }
 
-    const response = await fetch("/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    if (response.ok) {
+    const response = await signUp(formData)
+    if (response?.sessionToken) {
+      // Store the sessionToken  in localStorage and redirect to Dashboard page
+      localStorage.setItem("token",response.sessionToken)
       router.push("/dashboard");
     } else {
       console.error("Error signing up: ");
     }
   };
+
+  const signUp = async (data: SignInUserInput) => {
+    try {
+      const {data} = await signUpMutation({
+        variables: {
+          data: {
+            email: formData.email,
+            password: formData.password
+          }
+        } as SignUpMutationVariables
+      })
+
+      if (data?.signUp) {
+        console.log('User signed up successfully');
+        return data.signUp;
+      }
+    }
+    catch(error) {
+      console.error('Error signing up user: ', error)
+    }
+  }
 
   const MaybeRenderPasswordOrEmailError = () => {
     const emailTouched = formData.email.length > 0;
