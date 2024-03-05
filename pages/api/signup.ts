@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import bcrypt from "bcrypt";
 
 const saltRounds = 10;
 
@@ -9,7 +8,7 @@ export default async function signUpHandler(req: NextApiRequest, res: NextApiRes
     try {
       let formData = req.body;
       delete formData.confirmPassword;
-      // Check if the user with the email already exists
+    
       console.log(formData)
       res.status(200).json({ message: "User created succesfully" });
     } catch (error) {
