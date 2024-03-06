@@ -1,6 +1,7 @@
 "use client";
 import { redirect } from "next/navigation";
 import { useLayoutEffect } from "react"
+import Activity from "src/components/Activity";
 import Sidebar from "src/components/Sidebar";
 
 const Dashboard = () => {
@@ -13,12 +14,10 @@ const Dashboard = () => {
     // }, [])
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-4 ">
-            <div className="md:col-span-1">
-                <Sidebar />
-            </div>
+        <Sidebar>
+            <Activity />
             
-        </div>
+        </Sidebar>
     )
 }
 
