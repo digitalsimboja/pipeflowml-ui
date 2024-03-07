@@ -13,15 +13,15 @@ const TopCard = () => {
             What are AI agents?
           </h2>
           <p className="text-md text-gray-500">
-            AI agents created on Evveland are your workforce, equipped with
-            tools and skillset required to perform specific and personalized
-            tasks or services independently or semi-independently without direct
-            human intervention.
+            AI agents created on Evveland serve as your workforce, equipped with
+            the tools and skillsets required to perform specific and
+            personalized tasks or services independently or semi-independently,
+            without direct human intervention.
           </p>
         </div>
 
         <div>
-          <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          <button className="flex items-center px-4 py-2 bg-black text-white rounded hover:bg-blue-600">
             <RiAddLine className="mr-1" />
             Create Agent
           </button>

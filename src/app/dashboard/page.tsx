@@ -5,13 +5,13 @@ import Activity from "src/components/Activity";
 import Sidebar from "src/components/Sidebar";
 
 const Dashboard = () => {
-    // useLayoutEffect(() => {
-    //     const isAuthenticated = localStorage.getItem("token");
-    //     console.log(isAuthenticated)
-    //     if (!isAuthenticated) {
-    //         redirect("/login")
-    //     }
-    // }, [])
+    useLayoutEffect(() => {
+        const isAuthenticated = localStorage.getItem("token");
+        console.log(isAuthenticated)
+        if (!isAuthenticated) {
+            redirect("/login")
+        }
+    }, [])
 
     return (
         <Sidebar>

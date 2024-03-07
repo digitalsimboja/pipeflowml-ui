@@ -177,7 +177,7 @@ const Signup = () => {
             <div className="flex items-center justify-center">
               <button
                 type="submit"
-                className="border p-2 rounded-md w-full bg-blue-100 text-black tracking-wide text-xl font-bold"
+                className="border p-2 rounded-md w-full bg-black text-white tracking-wide text-xl font-bold"
               >
                 Signup
               </button>

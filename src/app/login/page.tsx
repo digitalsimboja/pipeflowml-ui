@@ -133,7 +133,7 @@ const Login = () => {
               onChange={handleInputChange}
               className="border p-2 mb-2 rounded-md w-full"
             />
-            <button className="border p-2 rounded-md w-full bg-blue-100 text-black tracking-wide text-xl font-bold">
+            <button className="border p-2 rounded-md w-full bg-black text-white tracking-wide text-xl font-bold">
               Login
             </button>
           </form>
