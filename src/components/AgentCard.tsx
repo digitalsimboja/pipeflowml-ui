@@ -12,7 +12,7 @@ const AgentCard = () => {
   return (
     <div className="ml-16 p-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl ">
-        <div className="flex flex-col gap-2  justify-between">
+        <div className="flex flex-col gap-2 ">
           <div className="border rounded-lg flex flex-col pl-4 gap-2 pt-4  h-full ">
             <div className="border rounded border-gray-200 p-2 flex items-center">
               <div className="h-2 w-2 rounded-full bg-green-500 mr-2"></div>

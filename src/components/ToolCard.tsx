@@ -1,4 +1,6 @@
+import { HiOutlineCheckCircle, HiOutlineDocumentText } from "react-icons/hi";
 import { RiAddLine } from "react-icons/ri";
+import Image from "next/image";
 
 const ToolCard = () => {
   return (
@@ -23,10 +25,49 @@ const ToolCard = () => {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 ml-4 md:ml-16 p-8 mt-4 gap-4">
-        <div className="border p-4">Frame 1</div>
-        <div className="border p-4">Frame 2</div>
-        <div className="border p-4">Frame 3</div>
+
+      <div className="ml-4 md:ml-16 p-4">
+        <div className="grid grid-cols-1 md:grid-cols-3">
+          <div className="flex flex-col gap-2">
+            <Image
+              src="/images/tools_preview.png"
+              alt="Tools Preview"
+              width={400}
+              height={140}
+              objectFit="cover"
+            />
+            <div className="flex items-center space-x-2 text-gray-500">
+              <HiOutlineDocumentText size={20} />
+              <h3 className="text-sm text-gray-700">Create custom tool</h3>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Image
+              src="/images/tool_builder.png"
+              alt="Tools Builder"
+              width={400}
+              height={140}
+              objectFit="cover"
+            />
+            <div className="flex items-center space-x-2 text-gray-500">
+              <HiOutlineCheckCircle size={20} />
+              <h3 className="text-sm text-gray-700">Use tools integrations</h3>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Image
+              src="/images/add_tools.png"
+              alt="Add tools"
+              width={400}
+              height={140}
+              objectFit="cover"
+            />
+            <div className="flex items-center space-x-2 text-gray-500">
+              <RiAddLine size={20} />
+              <h3 className="text-sm text-gray-700">Empower your agents</h3>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
