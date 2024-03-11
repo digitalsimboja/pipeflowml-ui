@@ -3,12 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { SignInUserInput, SignUpMutationVariables, useSignUpMutation } from "src/GraphQLComponents";
+import {
+  SignInUserInput,
+  SignUpMutationVariables,
+  useSignUpMutation,
+} from "src/GraphQLComponents";
 import { isValidEmail } from "src/utils/isValidEmail";
 
-
 const Signup = () => {
-  const [signUpMutation] = useSignUpMutation()
+  const [signUpMutation] = useSignUpMutation();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -52,11 +55,11 @@ const Signup = () => {
       return;
     }
 
-    const response = await signUp()
+    const response = await signUp();
     if (response?.sessionToken) {
       // Store the sessionToken  in localStorage and redirect to Dashboard page
-      localStorage.setItem("token",response.sessionToken)
-      router.push("/dashboard");
+      localStorage.setItem("token", response.sessionToken);
+      router.push(`/agents/bc5adc/${response.sessionToken}`);
     } else {
       console.error("Error signing up: ");
     }
@@ -64,24 +67,23 @@ const Signup = () => {
 
   const signUp = async () => {
     try {
-      const {data} = await signUpMutation({
+      const { data } = await signUpMutation({
         variables: {
           data: {
             email: formData.email,
-            password: formData.password
-          }
-        } as SignUpMutationVariables
-      })
+            password: formData.password,
+          },
+        } as SignUpMutationVariables,
+      });
 
       if (data?.signUp) {
-        console.log('User signed up successfully');
+        console.log("User signed up successfully");
         return data.signUp;
       }
+    } catch (error) {
+      console.error("Error signing up user: ", error);
     }
-    catch(error) {
-      console.error('Error signing up user: ', error)
-    }
-  }
+  };
 
   const MaybeRenderPasswordOrEmailError = () => {
     const emailTouched = formData.email.length > 0;

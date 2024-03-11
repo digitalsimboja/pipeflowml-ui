@@ -3,7 +3,7 @@ import { RiAddLine } from "react-icons/ri";
 
 const TopCard = () => {
   return (
-    <div className="ml-16 p-8">
+    <div className="ml-0 md:ml-80">
       <h1 className="text-black font-semibold tracking-wide text-lg">
         Your AI Work Agents
       </h1>

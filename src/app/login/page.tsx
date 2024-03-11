@@ -54,7 +54,7 @@ const Login = () => {
     const response = await signIn(formData);
     if (response?.sessionToken) {
       localStorage.setItem("token", response.sessionToken);
-      router.push("/dashboard");
+      router.push(`/agents/bc5adc/${response.sessionToken}`);
     } else {
       console.error("Error logging in user ");
     }

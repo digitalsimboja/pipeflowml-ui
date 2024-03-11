@@ -4,8 +4,8 @@ import Image from "next/image";
 
 const ToolCard = () => {
   return (
-    <>
-      <div className="flex flex-col md:flex-row md:justify-between mt-8 ml-4 md:ml-16 p-8">
+    <div className="ml-0 md:ml-80 ">
+      <div className="flex flex-col md:flex-row md:justify-between mt-8">
         <div className="flex flex-col max-w-full md:max-w-3xl">
           <h2 className="text-black font-semibold tracking-wide text-md">
             What are AI Agent Tools
@@ -25,9 +25,8 @@ const ToolCard = () => {
           </button>
         </div>
       </div>
-
-      <div className="ml-4 md:ml-16 p-4">
-        <div className="grid grid-cols-1 md:grid-cols-3">
+      <div className="mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 ">
           <div className="flex flex-col gap-2">
             <Image
               src="/images/tools_preview.png"
@@ -69,7 +68,7 @@ const ToolCard = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

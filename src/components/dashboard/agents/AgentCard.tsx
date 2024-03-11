@@ -10,7 +10,7 @@ import Image from "next/image";
 
 const AgentCard = () => {
   return (
-    <div className="ml-16 p-4">
+    <div className="ml-0 md:ml-80 p-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl ">
         <div className="flex flex-col gap-2 ">
           <div className="border rounded-lg flex flex-col pl-4 gap-2 pt-4  h-full ">

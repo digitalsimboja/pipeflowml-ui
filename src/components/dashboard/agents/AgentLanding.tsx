@@ -1,6 +1,6 @@
 import AgentCard from "./AgentCard";
-import ToolCard from "./ToolCard";
-import TopCard from "./TopCard";
+import ToolCard from "../tools/ToolCard";
+import TopCard from "../../TopCard";
 
 const AgentLanding = () => {
   return (
