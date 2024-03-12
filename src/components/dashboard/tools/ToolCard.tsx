@@ -1,8 +1,12 @@
+"use client";
 import { HiOutlineCheckCircle, HiOutlineDocumentText } from "react-icons/hi";
 import { RiAddLine } from "react-icons/ri";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 
 const ToolCard = () => {
+  const params = useParams<{ accountId: string; userId: string }>();
   return (
     <div className="ml-0 md:ml-80 ">
       <div className="flex flex-col md:flex-row md:justify-between mt-8">
@@ -18,12 +22,14 @@ const ToolCard = () => {
             24/7 without human intervention.
           </p>
         </div>
-        <div className="mt-4 md:mt-0">
-          <button className="flex items-center px-4 py-2 bg-black text-white rounded hover:bg-blue-600">
+        <div className="mt-4 md:mt-0 md:ml-4 ">
+        <Link href={`/tools/${params.accountId}/${params.userId}/new`} >
+          <button className="flex justify-center items-center w-full px-4 py-2 bg-black text-white rounded hover:bg-blue-600">
             <RiAddLine className="mr-1" />
             Create Tool
           </button>
-        </div>
+        </Link>
+      </div>
       </div>
       <div className="mt-8">
         <div className="grid grid-cols-1 md:grid-cols-3 ">
@@ -33,7 +39,6 @@ const ToolCard = () => {
               alt="Tools Preview"
               width={400}
               height={140}
-              objectFit="cover"
             />
             <div className="flex items-center space-x-2 text-gray-500">
               <HiOutlineDocumentText size={20} />
@@ -46,7 +51,6 @@ const ToolCard = () => {
               alt="Tools Builder"
               width={400}
               height={140}
-              objectFit="cover"
             />
             <div className="flex items-center space-x-2 text-gray-500">
               <HiOutlineCheckCircle size={20} />
@@ -59,7 +63,6 @@ const ToolCard = () => {
               alt="Add tools"
               width={400}
               height={140}
-              objectFit="cover"
             />
             <div className="flex items-center space-x-2 text-gray-500">
               <RiAddLine size={20} />

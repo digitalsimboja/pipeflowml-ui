@@ -48,7 +48,6 @@ const AgentCard = () => {
               alt="Machine Learning workflow"
               width={400}
               height={140}
-              objectFit="cover"
             />
           </div>
           <div className="flex items-center space-x-2 text-gray-500">

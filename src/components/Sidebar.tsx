@@ -8,14 +8,14 @@ import { BiQuestionMark } from "react-icons/bi";
 import { BsClockHistory } from "react-icons/bs";
 import { IoReceipt } from "react-icons/io5";
 import { useRef, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useClickAway } from "react-use";
+import { AiOutlineFileText } from "react-icons/ai";
 
 const Sidebar = ({
   children,
 }: React.PropsWithChildren<{ children: React.ReactNode }>) => {
   const params = useParams<{ accountId: string; userId: string }>();
-  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -59,47 +59,54 @@ const Sidebar = ({
               <RxDashboard size={20} /> <span className="ml-2">Project A</span>
             </div>
           </Link>
+          <Link href={`/templates/${params.accountId}/${params.userId}`}>
+            <div
+              className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}
+            >
+              <AiOutlineFileText size={20} /> <span className="ml-2">Templates</span>
+            </div>
+          </Link>
           <Link href="/dashboard">
-            <div className=" hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center ">
+            <div className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}>
               <RxPerson size={20} /> <span className="ml-2">Agents</span>
             </div>
           </Link>
           <Link href="/dashboard">
-            <div className=" hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center ">
+            <div className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}>
               <BsClockHistory size={20} />{" "}
               <span className="ml-2">Activity</span>
             </div>
           </Link>
           <Link href="/dashboard">
-            <div className=" hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center ">
+            <div className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}>
               <HiOutlineShoppingBag size={20} />{" "}
               <span className="ml-2">Tools</span>
             </div>
           </Link>
           <Link href="/dashboard">
-            <div className=" hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center ">
+            <div className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}>
               <FiDatabase size={20} /> <span className="ml-2">Data</span>
             </div>
           </Link>
           <Link href="/dashboard">
-            <div className=" hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center ">
+            <div className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}>
               <RiKeyLine size={20} /> <span className="ml-2">API keys</span>
             </div>
           </Link>
           <Link href="/dashboard">
-            <div className=" hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center ">
+            <div className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}>
               <IoReceipt size={20} /> <span className="ml-2">Billings</span>
             </div>
           </Link>
 
           <Link href="/dashboard">
-            <div className=" hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center ">
+            <div className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}>
               <BiQuestionMark size={20} />{" "}
               <span className="ml-2"> Support</span>
             </div>
           </Link>
           <Link href="/dashboard">
-            <div className=" hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center ">
+            <div className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}>
               <FiSettings size={20} /> <span className="ml-2"> Settings</span>
             </div>
           </Link>
