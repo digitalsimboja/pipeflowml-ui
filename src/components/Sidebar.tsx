@@ -66,7 +66,7 @@ const Sidebar = ({
               <AiOutlineFileText size={20} /> <span className="ml-2">Templates</span>
             </div>
           </Link>
-          <Link href="/dashboard">
+          <Link href={`/agents/${params.accountId}/${params.userId}`}>
             <div className={`hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg flex items-center`}>
               <RxPerson size={20} /> <span className="ml-2">Agents</span>
             </div>
