@@ -25,7 +25,7 @@ const NewAgent = () => {
     labels: [],
     addLabel: false,
     canReply: false,
-    canManageSocial: false
+    canManageSocial: false,
   });
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -46,7 +46,7 @@ const NewAgent = () => {
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: name == "labels" ? [...formData.labels,value]: value
+        [name]: name == "labels" ? [...formData.labels, value] : value,
       }));
     }
   }
@@ -67,7 +67,7 @@ const NewAgent = () => {
         <div>
           <input
             type="text"
-            className="w-full text-sm border-gray-100 rounded p-2 border-b-[2px]  font-bold"
+            className="w-full text-sm border-gray-100 rounded border-b-[2px]  font-bold"
             name="agentName"
             value={formData.agentName}
             onChange={handleInputChange}
@@ -214,7 +214,7 @@ const NewAgent = () => {
                 }`}
                 onClick={(e) =>
                   handleInputChange({
-                    target: { name: "canReply", value: !formData.canReply }, 
+                    target: { name: "canReply", value: !formData.canReply },
                     type: "checkbox",
                   } as unknown as ChangeEvent<HTMLInputElement>)
                 }
@@ -240,13 +240,16 @@ const NewAgent = () => {
               </p>
             </div>
             <div className="ml-auto">
-            <button
+              <button
                 className={`relative bg-blue-300 w-12 h-6 rounded-full ${
                   formData.canManageSocial ? "bg-blue-500" : "bg-blue-300"
                 }`}
                 onClick={(e) =>
                   handleInputChange({
-                    target: { name: "canManageSocial", value: !formData.canManageSocial }, 
+                    target: {
+                      name: "canManageSocial",
+                      value: !formData.canManageSocial,
+                    },
                     type: "checkbox",
                   } as unknown as ChangeEvent<HTMLInputElement>)
                 }
@@ -291,17 +294,125 @@ const NewAgent = () => {
     );
   };
 
-  const AgentAdvancedSettingSection = () => {
-    return <div className="col-span-3 bg-white rounded-lg">Item 7</div>;
+  const AgentInstructionSection = () => {
+    return (
+      <div className="col-span-full md:col-span-3 mt-4">
+        <div className="flex flex-col gap-4 -mt-10">
+          <h3 className="text-lg font-bold tracking-wide text-gray-500">
+            Provide initial prompt for your agent
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 bg-white gap-4 rounded-lg p-4">
+            <div className="rounded-lg p-2">
+              <h3 className="text-lg font-semibold tracking-tight text-gray-600">
+                Base instruction
+              </h3>
+              <p className="text-sm text-gray-700">
+                Describe the initial prompt for the agent. Provide more
+                instruction about how to respond to prompts.
+              </p>
+              <textarea
+                className="w-full  text-sm border-gray-100 rounded p-2 border-[2px] font-bold mt-4"
+                name="initialPrompt"
+                placeholder="e.g You are a helpful assistance. Prioritize understanding the context of the question. Aim to provide accurate information or helpful guidance in a straightforward manner.
+                Avoid unnecessary jargon or overly technical language that may confuse the user..."
+                rows={8}
+                cols={50}
+              ></textarea>
+            </div>
+
+            <div className="rounded-lg p-2">
+              <h3 className="text-lg font-semibold tracking-tight text-gray-600">
+                Automate with workflow builder
+              </h3>
+              <p className="text-sm text-gray-700">
+                Use our flow builder to describe generally how your agent should
+                make decisions after receiving a task or message.
+              </p>
+              <div className="flex justify-center items-center mx-auto h-60 border-[2px] border-gray-100 mt-4">
+                <button className="bg-black px-4 py-2 text-white rounded-full font-bold">
+                  Use workflow builder
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
-  const AgentInstructionSection = () => {
-    return <div className="col-span-3 bg-white rounded-lg">Item 8</div>;
+  const AgentAdvancedSettingSection = () => {
+    return (
+      <div className="col-span-full md:col-span-3 mt-4">
+        <div className="flex flex-col gap-4 md:mt-4">
+          <h3 className="text-lg font-bold tracking-wide text-gray-500">
+            Advanced settings
+          </h3>
+        </div>
+        <div className="bg-white rounded-lg border boder-gray-100 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+            <div className="flex flex-col">
+              <h3 className="text-md font-semibold tracking-wide text-gray-500">
+                Welcome Message
+              </h3>
+              <p className="text-sm text-gray-700">
+                Provide an opening message for users of the agent, usually
+                providing instructions on what sort of task is expected.{" "}
+              </p>
+              <textarea
+                className="w-full  text-sm border-gray-100 rounded p-2 border-[2px] font-bold mt-4"
+                name="initialPrompt"
+                placeholder="Enter a welcome message..."
+                rows={8}
+                cols={50}
+              ></textarea>
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-md font-semibold tracking-wide text-gray-500">
+                Instructions for naming tasks
+              </h3>
+              <p className="text-sm text-gray-700">
+                After you create a task, the agent automatically names it. Here
+                you can provide additional instructions for how the agent should
+                choose a name.
+              </p>
+              <textarea
+                className="w-full  text-sm border-gray-100 rounded p-2 border-[2px] font-bold mt-4"
+                name="initialPrompt"
+                placeholder="Enter naming instructions..."
+                rows={8}
+                cols={50}
+              ></textarea>
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-md font-semibold tracking-wide text-gray-500">
+                Agent timeout time
+              </h3>
+              <p className="text-sm text-gray-700">
+                How long can an agent work on a task before timing out. Note -
+                setting this to 24 hours will cause your agent to have to "wake
+                up" when initiating actions.
+              </p>
+              <div className="flex flex-col  justify-center border  rounded-lg items-center gap-2 p-2 bg-gradient-to-r from-gray-200 to-white mt-8">
+                <h3>Unlock AI Workforce feature</h3>
+                <div className="flex justify-between gap-2 ">
+                  <button className="bg-black p-1 font-semibold text-white rounded ">
+                    Upgrade <span className="ml-1">&gt;</span>
+                  </button>
+                  <button className="bg-black p-1 font-semibold text-white rounded ">
+                    Book a meeting <span className="ml-1">&gt;</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const AgentTeamSection = () => {
     return (
-      <div className=" rounded-lg bg-white p-2 flex flex-col gap-4">
+      <div className=" rounded-lg bg-white p-2 flex flex-col gap-4 ">
         <div>
           <h3 className="font-semibold text-sm tracking-wide ">
             Cordinate Agent Workforce
@@ -326,11 +437,10 @@ const NewAgent = () => {
     );
   };
 
-  console.log({ formData });
   return (
     <Sidebar>
-      <div className="ml-0 md:ml-60 ">
-        <div className="flex justify-between items-center bg-white mb-2">
+      <div className="ml-0 md:ml-60 bg-blue-50 rounded-lg  ">
+        <div className="flex justify-between items-center bg-white p-2">
           <button
             onClick={showAgents}
             className="bg-gray-200 pt-2 pb-2 px-4 font-semibold rounded-md "
@@ -342,15 +452,15 @@ const NewAgent = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 p-4 gap-4 bg-blue-50  rounded-lg ">
+        <div className="grid grid-cols-1 md:grid-cols-4  gap-4 p-4  rounded-lg ">
           <AgentDescriptionSection />
           <ToolSection />
           <AgentBasicSettingsSection />
 
           <div></div>
-          <AgentAdvancedSettingSection />
-          <div></div>
           <AgentInstructionSection />
+          <div></div>
+          <AgentAdvancedSettingSection />
         </div>
       </div>
     </Sidebar>
