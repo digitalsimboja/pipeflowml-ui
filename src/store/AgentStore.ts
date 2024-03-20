@@ -11,6 +11,9 @@ export interface AgentData extends AgentBasicSettings {
   agentName: string;
   agentDescription: string;
   llm: string;
+  agentInstruction: string;
+  welcomeMessage: string;
+  taskName:string;
 
 }
 
@@ -28,6 +31,9 @@ const useAgentStore = create<AgentStore>((set) => ({
     addLabel: false,
     canSuggestReply: false,
     canManageSocial: false,
+    agentInstruction: "",
+    welcomeMessage: "",
+    taskName: ""
   },
   setFormData: (newFormData) =>
     set((state) => ({ formData: { ...state.formData, ...newFormData } })),

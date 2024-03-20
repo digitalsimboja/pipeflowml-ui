@@ -41,7 +41,7 @@ const AgentName: React.FC = () => {
       <div className="mt-2">
         <input
           type="text"
-          className="w-full text-sm border-gray-300 rounded  focus:outline-none focus:ring focus:border-indigo-300 font-bold px-2 py-1"
+          className="w-full text-sm border-gray-300 rounded  focus:outline-none focus:ring focus:border-indigo-300  px-2 py-1"
           name="agentName"
           value={agentName}
           onChange={handleAgentNameChange}
@@ -49,7 +49,7 @@ const AgentName: React.FC = () => {
         />
         <input
           type="text"
-          className="w-full text-xs border-gray-300 rounded  p-2 focus:outline-none focus:ring focus:border-indigo-300 font-bold mt-2"
+          className="w-full text-xs border-gray-300 rounded  p-2 focus:outline-none focus:ring focus:border-indigo-300 mt-2"
           name="agentDescription"
           value={agentDescription}
           onChange={handleAgentDescriptionChange}
@@ -160,15 +160,19 @@ const AgentBasicSettingsSection: React.FC = () => {
 
   const [inputLabel, setInputLabel] = useState("");
 
-  useEffect(()=> {
+  useEffect(() => {
     setFormData({
       addLabel: userInput.addLabel,
       canSuggestReply: userInput.canSuggestReply,
       canManageSocial: userInput.canManageSocial,
-      labels: userInput.labels
-    })
-  }, [userInput.addLabel, userInput.canSuggestReply, userInput.canManageSocial, userInput.labels])
-
+      labels: userInput.labels,
+    });
+  }, [
+    userInput.addLabel,
+    userInput.canSuggestReply,
+    userInput.canManageSocial,
+    userInput.labels,
+  ]);
 
   const handleAddLabelInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputLabel(e.target.value);
@@ -192,9 +196,8 @@ const AgentBasicSettingsSection: React.FC = () => {
     }));
   };
 
-
   return (
-    <div className="col-span-full md:col-span-1 rounded-lg bg-white h-full md:h-[600px] p-4">
+    <div className="col-span-full md:col-span-1 rounded-lg bg-white h-full md:h-[600px] p-4 overflow-y-auto">
       <div className="items-center justify-center flex flex-wrap -m-2">
         <div className="flex items-center justify-between">
           <div className="flex-grow">
@@ -333,7 +336,21 @@ const AgentBasicSettingsSection: React.FC = () => {
   );
 };
 
-const AgentInstructionSection: React.FC = () => {
+const AgentBaseInstructionSection: React.FC = () => {
+  const { formData, setFormData } = useAgentStore();
+  const [agentInstruction, setAgentInstruction] = useState<string>(
+    formData.agentInstruction
+  );
+
+  useEffect(() => {
+    setFormData({ agentInstruction });
+  }, [agentInstruction]);
+
+  const handleTextareaInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setAgentInstruction(e.target.value);
+  };
   return (
     <div className="col-span-full md:col-span-3 mt-4">
       <div className="flex flex-col gap-4 -mt-10">
@@ -341,6 +358,7 @@ const AgentInstructionSection: React.FC = () => {
           Provide initial prompt for your agent
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 bg-white gap-4 rounded-lg p-4">
+          
           <div className="rounded-lg p-2">
             <h3 className="text-lg font-semibold tracking-tight text-gray-600">
               Base instruction
@@ -350,12 +368,13 @@ const AgentInstructionSection: React.FC = () => {
               instruction about how to respond to prompts.
             </p>
             <textarea
-              className="w-full  text-sm border-gray-100 rounded p-2 border-[2px] font-bold mt-4"
+              className="w-full text-sm border-gray-100 rounded p-2 border-[2px] mt-4"
               name="initialPrompt"
-              placeholder="e.g You are a helpful assistance. Prioritize understanding the context of the question. Aim to provide accurate information or helpful guidance in a straightforward manner.
-              Avoid unnecessary jargon or overly technical language that may confuse the user..."
+              placeholder="e.g You are a helpful and honest assistance. If you don't know the answer to a question, please don't respond with false information"
               rows={8}
               cols={50}
+              value={formData.agentInstruction}
+              onChange={handleTextareaInputChange}
             ></textarea>
           </div>
 
@@ -380,6 +399,31 @@ const AgentInstructionSection: React.FC = () => {
 };
 
 const AgentAdvancedSettingSection: React.FC = () => {
+  const { formData, setFormData } = useAgentStore();
+  const [welcomeMessage, setWelcomeMessage] = useState<string>(
+    formData.agentInstruction
+  );
+  const [taskName, setTaskName] = useState<string>(
+    formData.taskName
+  );
+
+  useEffect(() => {
+    setFormData({ welcomeMessage,taskName });
+  }, [welcomeMessage,taskName]);
+
+  const handleWelcomeMessageInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setWelcomeMessage(e.target.value);
+  };
+
+  const handleTaskNameInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setTaskName(e.target.value);
+  };
+
+
   return (
     <div className="col-span-full md:col-span-3 mt-4">
       <div className="flex flex-col gap-4 md:mt-4">
@@ -398,11 +442,13 @@ const AgentAdvancedSettingSection: React.FC = () => {
               providing instructions on what sort of task is expected.{" "}
             </p>
             <textarea
-              className="w-full  text-sm border-gray-100 rounded p-2 border-[2px] font-bold mt-4"
-              name="initialPrompt"
+              className="w-full  text-sm border-gray-100 rounded p-2 border-[2px]  mt-4"
+              name="welcomePrompt"
               placeholder="Enter a welcome message..."
               rows={8}
               cols={50}
+              value={formData.welcomeMessage}
+              onChange={handleWelcomeMessageInputChange}
             ></textarea>
           </div>
           <div className="flex flex-col">
@@ -415,11 +461,13 @@ const AgentAdvancedSettingSection: React.FC = () => {
               choose a name.
             </p>
             <textarea
-              className="w-full  text-sm border-gray-100 rounded p-2 border-[2px] font-bold mt-4"
-              name="initialPrompt"
+              className="w-full  text-sm border-gray-100 rounded p-2 border-[2px] mt-4"
+              name="taskNamePrompt"
               placeholder="Enter naming instructions..."
               rows={8}
               cols={50}
+              value={formData.taskName}
+              onChange={handleTaskNameInputChange}
             ></textarea>
           </div>
           <div className="flex flex-col">
@@ -491,7 +539,7 @@ const ToolSection: React.FC = () => {
 const NewAgent = () => {
   const router = useRouter();
   const params = useParams<{ accountId: string; userId: string }>();
-  const { formData, setFormData } = useAgentStore();
+  const { formData } = useAgentStore();
 
   const cancelCreateAgent = () => {
     router.push(`/agents/${params.accountId}/${params.userId}/create`);
@@ -519,7 +567,7 @@ const NewAgent = () => {
           <ToolSection />
           <AgentBasicSettingsSection />
           <div></div>
-          <AgentInstructionSection />
+          <AgentBaseInstructionSection />
           <div></div>
           <AgentAdvancedSettingSection />
         </div>
