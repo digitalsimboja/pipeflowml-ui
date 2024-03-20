@@ -14,8 +14,8 @@ export interface AgentDataProps {
   setFormData: (newFormData: Partial<AgentData>) => void;
 }
 
-const AgentName: React.FC<AgentDataProps> = (props: AgentDataProps) => {
-  const { formData, setFormData } = props;
+const AgentName: React.FC = () => {
+  const { formData, setFormData } = useAgentStore();
   const [agentName, setAgentName] = useState<string>(formData.agentName);
   const [agentDescription, setAgentDescription] = useState<string>(
     formData.agentDescription
@@ -60,8 +60,8 @@ const AgentName: React.FC<AgentDataProps> = (props: AgentDataProps) => {
   );
 };
 
-const LLMSection: React.FC<AgentDataProps> = (props: AgentDataProps) => {
-  const { formData, setFormData } = props;
+const LLMSection: React.FC = () => {
+  const { formData, setFormData } = useAgentStore();
   useEffect(() => {
     setFormData({ llm: formData.llm });
   }, [formData.llm, setFormData]);
@@ -150,15 +150,25 @@ const AgentTeamSection: React.FC = () => {
 };
 
 const AgentBasicSettingsSection: React.FC = () => {
-  const { formData } = useAgentStore();
+  const { formData, setFormData } = useAgentStore();
   const [userInput, setUserInput] = useState<Partial<AgentBasicSettings>>({
     addLabel: formData.addLabel,
-    canReply: formData.canReply,
+    canSuggestReply: formData.canSuggestReply,
     canManageSocial: formData.canManageSocial,
     labels: formData.labels || [],
   });
 
   const [inputLabel, setInputLabel] = useState("");
+
+  useEffect(()=> {
+    setFormData({
+      addLabel: userInput.addLabel,
+      canSuggestReply: userInput.canSuggestReply,
+      canManageSocial: userInput.canManageSocial,
+      labels: userInput.labels
+    })
+  }, [userInput.addLabel, userInput.canSuggestReply, userInput.canManageSocial, userInput.labels])
+
 
   const handleAddLabelInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputLabel(e.target.value);
@@ -171,7 +181,7 @@ const AgentBasicSettingsSection: React.FC = () => {
         addLabel: true,
         labels: [...(prevInput.labels || []), inputLabel.trim()],
       }));
-      setInputLabel("");
+      setInputLabel(""); // Clear input after adding label
     }
   };
 
@@ -181,6 +191,7 @@ const AgentBasicSettingsSection: React.FC = () => {
       labels: prevInput.labels?.filter((_, i) => i !== index),
     }));
   };
+
 
   return (
     <div className="col-span-full md:col-span-1 rounded-lg bg-white h-full md:h-[600px] p-4">
@@ -215,15 +226,18 @@ const AgentBasicSettingsSection: React.FC = () => {
           <div className="ml-auto">
             <button
               className={`relative bg-blue-300 w-12 h-6 rounded-full ${
-                userInput.canReply ? "bg-blue-500" : "bg-blue-300"
+                userInput.canSuggestReply ? "bg-blue-500" : "bg-blue-300"
               }`}
               onClick={() =>
-                setUserInput({ ...userInput, canReply: !userInput.canReply })
+                setUserInput({
+                  ...userInput,
+                  canSuggestReply: !userInput.canSuggestReply,
+                })
               }
             >
               <span
                 className={`absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 bg-white rounded-full transition-transform transform ${
-                  userInput.canReply ? "translate-x-full" : ""
+                  userInput.canSuggestReply ? "translate-x-full" : ""
                 }`}
               ></span>
             </button>
@@ -436,12 +450,10 @@ const AgentAdvancedSettingSection: React.FC = () => {
 };
 
 const AgentDescriptionSection: React.FC = () => {
-  const { formData, setFormData } = useAgentStore();
-
   return (
     <div className=" flex flex-col gap-4">
-      <AgentName formData={formData} setFormData={setFormData} />
-      <LLMSection formData={formData} setFormData={setFormData} />
+      <AgentName />
+      <LLMSection />
       <AgentTriggerSection />
       <AgentTeamSection />
     </div>
@@ -479,11 +491,13 @@ const ToolSection: React.FC = () => {
 const NewAgent = () => {
   const router = useRouter();
   const params = useParams<{ accountId: string; userId: string }>();
-  const { formData } = useAgentStore();
+  const { formData, setFormData } = useAgentStore();
 
   const cancelCreateAgent = () => {
     router.push(`/agents/${params.accountId}/${params.userId}/create`);
   };
+
+  console.log({ formData });
 
   return (
     <Sidebar>

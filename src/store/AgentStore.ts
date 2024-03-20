@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
 export interface AgentBasicSettings {
-  addLabel?: boolean;
-  canReply?: boolean;
-  canManageSocial?: boolean;
+  addLabel: boolean;
+  canSuggestReply: boolean;
+  canManageSocial: boolean;
   labels: string[];
 }
 
@@ -26,7 +26,7 @@ const useAgentStore = create<AgentStore>((set) => ({
     llm: " GPT3.5",
     labels: [],
     addLabel: false,
-    canReply: false,
+    canSuggestReply: false,
     canManageSocial: false,
   },
   setFormData: (newFormData) =>
