@@ -1,21 +1,16 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { RiAddLine, RiCloseLine } from "react-icons/ri";
 import Sidebar from "src/components/Sidebar";
 import ToolSidebar from "src/components/dashboard/tools/ToolSidebar";
+import { toolList } from "src/lib/data/tools";
 import useAgentStore, {
   AgentBasicSettings,
   AgentData,
 } from "src/store/AgentStore";
-import { IoLogoYoutube } from "react-icons/io";
-import { BsSearch } from "react-icons/bs";
-import { MdOutlineMarkEmailUnread, MdPictureAsPdf } from "react-icons/md";
-import { FaFileInvoice, FaTools } from "react-icons/fa";
-import { FcBusinessman } from "react-icons/fc";
 
 export interface AgentDataProps {
   formData: AgentData;
@@ -527,18 +522,14 @@ const AgentDescriptionSection: React.FC = () => {
 
 const AddToolModal: React.FC<AddToolModalProps> = ({ onClose }) => {
   const [addedTools, setAddedTools] = useState<Tool[]>([]);
-  const [toolList] = useState([
-    { name: "Industry Research", icon: BsSearch },
-    { name: "Email Responder", icon: MdOutlineMarkEmailUnread },
-    { name: "YouTube Transcriber", icon: IoLogoYoutube },
-    { name: "Extract Data from PDF", icon: MdPictureAsPdf },
-    { name: "Invoice Generator Assistant", icon: FaFileInvoice },
-    { name: "Marketing Rep", icon: FcBusinessman },
-  ]);
 
   const addTool = (newTool: Tool) => {
     setAddedTools([...addedTools, newTool]);
   };
+
+  const filteredToolList = toolList.filter(
+    (tool) => !addedTools.find((addedTool) => addedTool.name === tool.name)
+  );
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-800 bg-opacity-50 ">
@@ -580,7 +571,7 @@ const AddToolModal: React.FC<AddToolModalProps> = ({ onClose }) => {
 
         <ToolSidebar>
           <div className="grid grid-cols-1 md:grid-cols-3 mt-4 p-8 w-full gap-4">
-            {toolList.map((tool, index) => (
+            {filteredToolList.map((tool, index) => (
               <div
                 key={index}
                 className=" border-[2px] border-dashed border-gray-200 p-4 rounded-lg"

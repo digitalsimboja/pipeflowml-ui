@@ -14,6 +14,7 @@ export interface AgentData extends AgentBasicSettings {
   agentInstruction: string;
   welcomeMessage: string;
   taskName:string;
+  tools: []
 
 }
 
@@ -28,6 +29,7 @@ const useAgentStore = create<AgentStore>((set) => ({
     agentDescription: "",
     llm: " GPT3.5",
     labels: [],
+    tools: [],
     addLabel: false,
     canSuggestReply: false,
     canManageSocial: false,

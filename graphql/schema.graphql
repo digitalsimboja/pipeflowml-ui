@@ -66,9 +66,13 @@ type CreateToolResponse {
 
 """The tools granting more capability to the AI agent"""
 enum IntegratedTool {
-  EMAILTOOOL
-  EVVELANDAI
-  YOUTUBE_VIDEO_TRANSCRIPTION
+  EmailResponder
+  EvvelandAI
+  ExtractDataFromPDF
+  IndustryResearch
+  InvoiceGeneratorAssistant
+  MarketingRep
+  YouTubeTranscriber
 }
 
 """
