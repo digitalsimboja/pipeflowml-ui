@@ -1,17 +1,37 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { RiAddLine, RiCloseLine } from "react-icons/ri";
 import Sidebar from "src/components/Sidebar";
+import ToolSidebar from "src/components/dashboard/tools/ToolSidebar";
 import useAgentStore, {
   AgentBasicSettings,
   AgentData,
 } from "src/store/AgentStore";
+import { IoLogoYoutube } from "react-icons/io";
+import { BsSearch } from "react-icons/bs";
+import { MdOutlineMarkEmailUnread, MdPictureAsPdf } from "react-icons/md";
+import { FaFileInvoice, FaTools } from "react-icons/fa";
+import { FcBusinessman } from "react-icons/fc";
 
 export interface AgentDataProps {
   formData: AgentData;
   setFormData: (newFormData: Partial<AgentData>) => void;
+}
+
+export interface Tool {
+  name: string;
+  icon: React.ElementType;
+}
+export interface ToolSectionProps {
+  openToolModal: () => void;
+}
+
+export interface AddToolModalProps {
+  onClose: () => void;
 }
 
 const AgentName: React.FC = () => {
@@ -62,13 +82,14 @@ const AgentName: React.FC = () => {
 
 const LLMSection: React.FC = () => {
   const { formData, setFormData } = useAgentStore();
+  const [selectedLLM, setSelectedLLM] = useState<string>(formData.llm);
   useEffect(() => {
-    setFormData({ llm: formData.llm });
-  }, [formData.llm, setFormData]);
+    setFormData({ llm: selectedLLM });
+  }, [selectedLLM, setFormData]);
 
   const handleSelectLLMChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const llm = e.target.value;
-    setFormData({ llm });
+    console.log(e.target.value);
+    setSelectedLLM(e.target.value);
   };
 
   return (
@@ -87,7 +108,7 @@ const LLMSection: React.FC = () => {
           onChange={handleSelectLLMChange}
           className=" w-full bg-white font-bold"
           name="llm"
-          defaultValue={formData.llm}
+          defaultValue={selectedLLM}
         >
           <option disabled>Select a model...</option>
           <option value="GPT3.5">GPT3.5</option>
@@ -358,7 +379,6 @@ const AgentBaseInstructionSection: React.FC = () => {
           Provide initial prompt for your agent
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 bg-white gap-4 rounded-lg p-4">
-          
           <div className="rounded-lg p-2">
             <h3 className="text-lg font-semibold tracking-tight text-gray-600">
               Base instruction
@@ -403,13 +423,11 @@ const AgentAdvancedSettingSection: React.FC = () => {
   const [welcomeMessage, setWelcomeMessage] = useState<string>(
     formData.agentInstruction
   );
-  const [taskName, setTaskName] = useState<string>(
-    formData.taskName
-  );
+  const [taskName, setTaskName] = useState<string>(formData.taskName);
 
   useEffect(() => {
-    setFormData({ welcomeMessage,taskName });
-  }, [welcomeMessage,taskName]);
+    setFormData({ welcomeMessage, taskName });
+  }, [welcomeMessage, taskName]);
 
   const handleWelcomeMessageInputChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
@@ -422,7 +440,6 @@ const AgentAdvancedSettingSection: React.FC = () => {
   ) => {
     setTaskName(e.target.value);
   };
-
 
   return (
     <div className="col-span-full md:col-span-3 mt-4">
@@ -447,7 +464,7 @@ const AgentAdvancedSettingSection: React.FC = () => {
               placeholder="Enter a welcome message..."
               rows={8}
               cols={50}
-              value={formData.welcomeMessage}
+              value={welcomeMessage}
               onChange={handleWelcomeMessageInputChange}
             ></textarea>
           </div>
@@ -466,7 +483,7 @@ const AgentAdvancedSettingSection: React.FC = () => {
               placeholder="Enter naming instructions..."
               rows={8}
               cols={50}
-              value={formData.taskName}
+              value={taskName}
               onChange={handleTaskNameInputChange}
             ></textarea>
           </div>
@@ -508,7 +525,94 @@ const AgentDescriptionSection: React.FC = () => {
   );
 };
 
-const ToolSection: React.FC = () => {
+const AddToolModal: React.FC<AddToolModalProps> = ({ onClose }) => {
+  const [addedTools, setAddedTools] = useState<Tool[]>([]);
+  const [toolList] = useState([
+    { name: "Industry Research", icon: BsSearch },
+    { name: "Email Responder", icon: MdOutlineMarkEmailUnread },
+    { name: "YouTube Transcriber", icon: IoLogoYoutube },
+    { name: "Extract Data from PDF", icon: MdPictureAsPdf },
+    { name: "Invoice Generator Assistant", icon: FaFileInvoice },
+    { name: "Marketing Rep", icon: FcBusinessman },
+  ]);
+
+  const addTool = (newTool: Tool) => {
+    setAddedTools([...addedTools, newTool]);
+  };
+
+  return (
+    <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-800 bg-opacity-50 ">
+      <div className="bg-white  rounded-lg relative w-full max-w-7xl ">
+        <div className="">
+          <h3 className="text-xl font-md mb-4 p-4">Configure AI Tools</h3>
+          <button
+            className="absolute top-0 right-0 mt-1 mr-1 text-gray-500 hover:text-red-500 p-4"
+            onClick={onClose}
+          >
+            <AiOutlineClose />
+          </button>
+        </div>
+
+        <div className="relative w-full max-w-xl">
+          <input
+            type="text"
+            placeholder="search tool"
+            className="w-full border border-gray-100 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+          />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+            <AiOutlineSearch className="text-gray-400" />
+          </div>
+        </div>
+        <div className="my-4 flex items-center justify-start overflow-x-auto">
+          {addedTools.map((tool, index) => (
+            <button
+              key={index}
+              className="mx-2 bg-gray-50 p-2 rounded-lg border font-bold flex items-center space-x-2"
+            >
+              {React.createElement(tool.icon, {
+                size: 20,
+                className: "text-blue-500 text-xl",
+              })}
+              <span>{tool.name}</span>
+            </button>
+          ))}
+        </div>
+
+        <ToolSidebar>
+          <div className="grid grid-cols-1 md:grid-cols-3 mt-4 p-8 w-full gap-4">
+            {toolList.map((tool, index) => (
+              <div
+                key={index}
+                className=" border-[2px] border-dashed border-gray-200 p-4 rounded-lg"
+              >
+                <div className="flex flex-col gap-8">
+                  <div className="flex items-center space-x-2">
+                    <tool.icon size={20} className="text-blue-500 text-xl" />
+                    <h3 className="text-md font-semibold">{tool.name}</h3>
+                  </div>
+                  ...
+                  <div className="flex justify-end text-md font-semibold p-2 rounded-lg">
+                    <button
+                      onClick={() => addTool(tool)}
+                      className="bg-gray-50 hover:bg-gray-100 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                    >
+                      <div className="flex items-center">
+                        <RiAddLine className="mr-1" />
+                        Add Tool
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </ToolSidebar>
+      </div>
+    </div>
+  );
+};
+
+const ToolSection: React.FC<ToolSectionProps> = ({ openToolModal }) => {
   return (
     <div className="col-span-full md:col-span-2 rounded-lg bg-white h-full md:h-[600px] p-8 gap-20 flex flex-col items-center">
       <div className="flex flex-col text-center mx-auto">
@@ -529,7 +633,10 @@ const ToolSection: React.FC = () => {
           className="z-index-[-200] "
         />
       </div>
-      <button className="bg-black text-white p-2 rounded-lg z-index-200 m-8">
+      <button
+        onClick={openToolModal}
+        className="bg-black text-white p-2 rounded-lg z-index-200 m-8"
+      >
         Add tools
       </button>
     </div>
@@ -539,13 +646,19 @@ const ToolSection: React.FC = () => {
 const NewAgent = () => {
   const router = useRouter();
   const params = useParams<{ accountId: string; userId: string }>();
-  const { formData } = useAgentStore();
+  const [showToolModal, setShowToolModal] = useState<boolean>(false);
 
   const cancelCreateAgent = () => {
     router.push(`/agents/${params.accountId}/${params.userId}/create`);
   };
 
-  console.log({ formData });
+  const openToolModal = () => {
+    setShowToolModal(true);
+  };
+
+  const closeToolModal = () => {
+    setShowToolModal(false);
+  };
 
   return (
     <Sidebar>
@@ -564,7 +677,7 @@ const NewAgent = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-4  gap-4 p-4  rounded-lg ">
           <AgentDescriptionSection />
-          <ToolSection />
+          <ToolSection openToolModal={openToolModal} />
           <AgentBasicSettingsSection />
           <div></div>
           <AgentBaseInstructionSection />
@@ -572,6 +685,8 @@ const NewAgent = () => {
           <AgentAdvancedSettingSection />
         </div>
       </div>
+
+      {showToolModal && <AddToolModal onClose={closeToolModal} />}
     </Sidebar>
   );
 };
