@@ -10,6 +10,7 @@ import { toolList } from "src/lib/data/tools";
 import useAgentStore, {
   AgentBasicSettings,
   AgentData,
+  Tool,
 } from "src/store/AgentStore";
 
 export interface AgentDataProps {
@@ -17,10 +18,6 @@ export interface AgentDataProps {
   setFormData: (newFormData: Partial<AgentData>) => void;
 }
 
-export interface Tool {
-  name: string;
-  icon: React.ElementType;
-}
 export interface ToolSectionProps {
   openToolModal: () => void;
 }
@@ -521,7 +518,12 @@ const AgentDescriptionSection: React.FC = () => {
 };
 
 const AddToolModal: React.FC<AddToolModalProps> = ({ onClose }) => {
-  const [addedTools, setAddedTools] = useState<Tool[]>([]);
+  const { formData, setFormData } = useAgentStore();
+  const [addedTools, setAddedTools] = useState<Tool[]>(formData.tools);
+
+  useEffect(() => {
+    setFormData({ tools: addedTools });
+  }, [addedTools]);
 
   const addTool = (newTool: Tool) => {
     setAddedTools([...addedTools, newTool]);
@@ -531,6 +533,7 @@ const AddToolModal: React.FC<AddToolModalProps> = ({ onClose }) => {
     (tool) => !addedTools.find((addedTool) => addedTool.name === tool.name)
   );
 
+  console.log({ formData });
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-800 bg-opacity-50 ">
       <div className="bg-white  rounded-lg relative w-full max-w-7xl ">
@@ -555,7 +558,7 @@ const AddToolModal: React.FC<AddToolModalProps> = ({ onClose }) => {
           </div>
         </div>
         <div className="my-4 flex items-center justify-start overflow-x-auto">
-          {addedTools.map((tool, index) => (
+          {formData.tools?.map((tool, index) => (
             <button
               key={index}
               className="mx-2 bg-gray-50 p-2 rounded-lg border font-bold flex items-center space-x-2"

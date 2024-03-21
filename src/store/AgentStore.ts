@@ -1,5 +1,8 @@
 import { create } from 'zustand';
-
+export interface Tool {
+  name: string;
+  icon: React.ElementType;
+}
 export interface AgentBasicSettings {
   addLabel: boolean;
   canSuggestReply: boolean;
@@ -14,7 +17,7 @@ export interface AgentData extends AgentBasicSettings {
   agentInstruction: string;
   welcomeMessage: string;
   taskName:string;
-  tools: []
+  tools: Tool[]
 
 }
 
