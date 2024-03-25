@@ -321,7 +321,7 @@ const AgentBasicSettingsSection: React.FC = () => {
             <div className="flex items-center mb-2">
               <input
                 type="text"
-                className="w-full text-sm border-gray-100 rounded p-2 border-b-[2px] font-bold mr-2"
+                className="w-full text-sm border-gray-100 rounded p-2 border-b-[2px] mr-2"
                 value={inputLabel}
                 onChange={handleAddLabelInput}
                 placeholder="Label your tasks.."
@@ -533,7 +533,6 @@ const AddToolModal: React.FC<AddToolModalProps> = ({ onClose }) => {
     (tool) => !addedTools.find((addedTool) => addedTool.name === tool.name)
   );
 
-  console.log({ formData });
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-800 bg-opacity-50 ">
       <div className="bg-white  rounded-lg relative w-full max-w-7xl ">
@@ -607,26 +606,47 @@ const AddToolModal: React.FC<AddToolModalProps> = ({ onClose }) => {
 };
 
 const ToolSection: React.FC<ToolSectionProps> = ({ openToolModal }) => {
+  const { formData } = useAgentStore();
+  const [toolsAdded, setToolsAdded] = useState<Tool[]>(formData.tools);
+
+  useEffect(() => {
+    setToolsAdded(formData.tools);
+  }, [formData.tools]);
+
   return (
     <div className="col-span-full md:col-span-2 rounded-lg bg-white h-full md:h-[600px] p-8 gap-20 flex flex-col items-center">
       <div className="flex flex-col text-center mx-auto">
         <h3 className="text-2xl font-bold tracking-wide text-black">
           Equip your agents
         </h3>
-        <p className=" text-gray-500 text-sm max-w-xs">
+        <p className="text-gray-500 text-sm max-w-xs">
           Provide more power to your agents by equipping them with tools to
           enhance their skillset
         </p>
       </div>
-      <div className="mx-auto ">
-        <Image
-          src="/images/tools.jpeg"
-          alt="Tools image"
-          width={200}
-          height={200}
-          className="z-index-[-200] "
-        />
-      </div>
+      {toolsAdded.length > 0 ? (
+        <div className="flex flex-wrap justify-center items-center gap-4">
+          {toolsAdded.map((tool, index) => (
+            <div key={index} className="flex items-center">
+              {React.createElement(tool.icon, {
+                size: 20,
+                className: "text-blue-500 text-xl mr-2",
+              })}
+              <span>{tool.name}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="mx-auto">
+          <Image
+            src="/images/tools.jpeg"
+            alt="Tools image"
+            width={200}
+            height={200}
+            className="z-index-[-200] "
+          />
+        </div>
+      )}
       <button
         onClick={openToolModal}
         className="bg-black text-white p-2 rounded-lg z-index-200 m-8"
@@ -641,6 +661,7 @@ const NewAgent = () => {
   const router = useRouter();
   const params = useParams<{ accountId: string; userId: string }>();
   const [showToolModal, setShowToolModal] = useState<boolean>(false);
+  const { formData } = useAgentStore();
 
   const cancelCreateAgent = () => {
     router.push(`/agents/${params.accountId}/${params.userId}/create`);
@@ -653,7 +674,7 @@ const NewAgent = () => {
   const closeToolModal = () => {
     setShowToolModal(false);
   };
-
+  console.log({ formData });
   return (
     <Sidebar>
       <div className="ml-0 md:ml-60 bg-blue-50 rounded-lg  ">
