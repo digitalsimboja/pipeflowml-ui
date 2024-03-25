@@ -84,9 +84,13 @@ export type CreateToolResponse = {
 
 /** The tools granting more capability to the AI agent */
 export enum IntegratedTool {
-  Emailtoool = 'EMAILTOOOL',
-  Evvelandai = 'EVVELANDAI',
-  YoutubeVideoTranscription = 'YOUTUBE_VIDEO_TRANSCRIPTION'
+  EmailResponder = 'EmailResponder',
+  EvvelandAi = 'EvvelandAI',
+  ExtractDataFromPdf = 'ExtractDataFromPDF',
+  IndustryResearch = 'IndustryResearch',
+  InvoiceGeneratorAssistant = 'InvoiceGeneratorAssistant',
+  MarketingRep = 'MarketingRep',
+  YouTubeTranscriber = 'YouTubeTranscriber'
 }
 
 /** Language Learning Model used by the AI agent for language understanding and generation. */

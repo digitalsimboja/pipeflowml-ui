@@ -6,7 +6,7 @@ import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { RiAddLine, RiCloseLine } from "react-icons/ri";
 import Sidebar from "src/components/Sidebar";
 import ToolSidebar from "src/components/dashboard/tools/ToolSidebar";
-import { toolList } from "src/lib/data/tools";
+import { toolChain } from "src/lib/data/tools";
 import useAgentStore, {
   AgentBasicSettings,
   AgentData,
@@ -529,7 +529,7 @@ const AddToolModal: React.FC<AddToolModalProps> = ({ onClose }) => {
     setAddedTools([...addedTools, newTool]);
   };
 
-  const filteredToolList = toolList.filter(
+  const filteredToolList = toolChain.filter(
     (tool) => !addedTools.find((addedTool) => addedTool.name === tool.name)
   );
 
@@ -661,7 +661,6 @@ const NewAgent = () => {
   const router = useRouter();
   const params = useParams<{ accountId: string; userId: string }>();
   const [showToolModal, setShowToolModal] = useState<boolean>(false);
-  const { formData } = useAgentStore();
 
   const cancelCreateAgent = () => {
     router.push(`/agents/${params.accountId}/${params.userId}/create`);
@@ -674,7 +673,7 @@ const NewAgent = () => {
   const closeToolModal = () => {
     setShowToolModal(false);
   };
-  console.log({ formData });
+
   return (
     <Sidebar>
       <div className="ml-0 md:ml-60 bg-blue-50 rounded-lg  ">
