@@ -60,14 +60,14 @@ const Login = () => {
     }
   };
 
-  const signIn = async (data: SignInUserInput) => {
+  const signIn = async (sigInData: SignInUserInput) => {
     try {
       // Use the signInUser mutation here
       const { data } = await signInMutation({
         variables: {
           data: {
-            email: formData.email,
-            password: formData.password,
+            email: sigInData.email,
+            password: sigInData.password,
           },
         } as SignInUserMutationVariables,
       });

@@ -1,0 +1,12 @@
+
+
+
+mutation createAgent($data: CreateAgentInput!) {
+  createAgent(data: $data) {
+    id
+    name
+    sharableURL
+    
+  }
+}
+

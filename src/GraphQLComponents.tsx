@@ -31,18 +31,6 @@ export enum AiAgentDomain {
   TechnicalSupport = 'TECHNICAL_SUPPORT'
 }
 
-export type AiAgentResponse = {
-  __typename?: 'AIAgentResponse';
-  description?: Maybe<Scalars['String']['output']>;
-  domain: AiAgentDomain;
-  id: Scalars['ID']['output'];
-  instruction?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
-  sharableURL: Scalars['String']['output'];
-  tools?: Maybe<Array<IntegratedTool>>;
-  welcomeMessage?: Maybe<Scalars['String']['output']>;
-};
-
 export type Company = {
   __typename?: 'Company';
   id: Scalars['ID']['output'];
@@ -72,28 +60,30 @@ export type CreateAgentInput = {
   instruction?: InputMaybe<Scalars['String']['input']>;
   model?: LlmModel;
   name: Scalars['String']['input'];
-  tools?: InputMaybe<Array<IntegratedTool>>;
+  toolIds?: InputMaybe<Array<Scalars['ID']['input']>>;
+  useTemplate: Scalars['Boolean']['input'];
   welcomeMessage?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateAgentResponse = {
+  __typename?: 'CreateAgentResponse';
+  description?: Maybe<Scalars['String']['output']>;
+  domain: AiAgentDomain;
+  id: Scalars['ID']['output'];
+  instruction?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  sharableURL: Scalars['String']['output'];
+  tools?: Maybe<Array<ToolResponse>>;
+  welcomeMessage?: Maybe<Scalars['String']['output']>;
 };
 
 export type CreateToolResponse = {
   __typename?: 'CreateToolResponse';
   description?: Maybe<Scalars['String']['output']>;
-  name: IntegratedTool;
+  name: ToolType;
 };
 
-/** The tools granting more capability to the AI agent */
-export enum IntegratedTool {
-  EmailResponder = 'EmailResponder',
-  EvvelandAi = 'EvvelandAI',
-  ExtractDataFromPdf = 'ExtractDataFromPDF',
-  IndustryResearch = 'IndustryResearch',
-  InvoiceGeneratorAssistant = 'InvoiceGeneratorAssistant',
-  MarketingRep = 'MarketingRep',
-  YouTubeTranscriber = 'YouTubeTranscriber'
-}
-
-/** Language Learning Model used by the AI agent for language understanding and generation. */
+/** Large Language Model used by the AI agent for language understanding and generation. */
 export enum LlmModel {
   Fireworks = 'FIREWORKS',
   Gpt3_5 = 'GPT3_5',
@@ -110,12 +100,12 @@ export enum LlmModel {
 export type Mutation = {
   __typename?: 'Mutation';
   allocatePreferenceToCompany: CompanyMutationResponse;
-  createAgent: AiAgentResponse;
+  createAgent: CreateAgentResponse;
   createCompany: CompanyMutationResponse;
   createTool: CreateToolResponse;
   signInUser: SignInUserResponse;
   signUp: SignUpUserResponse;
-  updateAgent: AiAgentResponse;
+  updateAgent: CreateAgentResponse;
 };
 
 
@@ -155,7 +145,7 @@ export type PartialAgentInput = {
   domain?: InputMaybe<AiAgentDomain>;
   instruction?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  tools?: InputMaybe<Array<IntegratedTool>>;
+  tools?: InputMaybe<Array<ToolType>>;
   welcomeMessage?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -209,6 +199,26 @@ export type SignUpUserResponse = {
   sessionToken: Scalars['String']['output'];
 };
 
+export type ToolResponse = {
+  __typename?: 'ToolResponse';
+  isTemplate: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  type: ToolType;
+};
+
+/** The tools granting more capability to the AI agent */
+export enum ToolType {
+  EmailResponder = 'EmailResponder',
+  Evveland = 'Evveland',
+  ExtractDataFromPdf = 'ExtractDataFromPdf',
+  IndustryResearch = 'IndustryResearch',
+  InvoiceGeneratorAssistant = 'InvoiceGeneratorAssistant',
+  MarketingRep = 'MarketingRep',
+  MatchMaker = 'MatchMaker',
+  User = 'User',
+  YouTubeTranscriber = 'YouTubeTranscriber'
+}
+
 export type UserCompayQueryResponse = {
   __typename?: 'UserCompayQueryResponse';
   companies?: Maybe<Array<Company>>;
@@ -220,6 +230,13 @@ export type UserQueryResponse = {
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
 };
+
+export type CreateAgentMutationVariables = Exact<{
+  data: CreateAgentInput;
+}>;
+
+
+export type CreateAgentMutation = { __typename?: 'Mutation', createAgent: { __typename?: 'CreateAgentResponse', id: string, name: string, sharableURL: string } };
 
 export type SignUpMutationVariables = Exact<{
   data: SignUpUserInput;
@@ -236,6 +253,41 @@ export type SignInUserMutationVariables = Exact<{
 export type SignInUserMutation = { __typename?: 'Mutation', signInUser: { __typename?: 'SignInUserResponse', sessionToken: string } };
 
 
+export const CreateAgentDocument = gql`
+    mutation createAgent($data: CreateAgentInput!) {
+  createAgent(data: $data) {
+    id
+    name
+    sharableURL
+  }
+}
+    `;
+export type CreateAgentMutationFn = Apollo.MutationFunction<CreateAgentMutation, CreateAgentMutationVariables>;
+
+/**
+ * __useCreateAgentMutation__
+ *
+ * To run a mutation, you first call `useCreateAgentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAgentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAgentMutation, { data, loading, error }] = useCreateAgentMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateAgentMutation(baseOptions?: Apollo.MutationHookOptions<CreateAgentMutation, CreateAgentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAgentMutation, CreateAgentMutationVariables>(CreateAgentDocument, options);
+      }
+export type CreateAgentMutationHookResult = ReturnType<typeof useCreateAgentMutation>;
+export type CreateAgentMutationResult = Apollo.MutationResult<CreateAgentMutation>;
+export type CreateAgentMutationOptions = Apollo.BaseMutationOptions<CreateAgentMutation, CreateAgentMutationVariables>;
 export const SignUpDocument = gql`
     mutation SignUp($data: SignUpUserInput!) {
   signUp(data: $data) {

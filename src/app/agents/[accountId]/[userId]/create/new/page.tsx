@@ -4,6 +4,14 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { RiAddLine, RiCloseLine } from "react-icons/ri";
+import {
+  AiAgentDomain,
+  CreateAgentInput,
+  CreateAgentMutationVariables,
+  ToolType,
+  LlmModel,
+  useCreateAgentMutation,
+} from "src/GraphQLComponents";
 import Sidebar from "src/components/Sidebar";
 import ToolSidebar from "src/components/dashboard/tools/ToolSidebar";
 import { toolChain } from "src/lib/data/tools";
@@ -72,16 +80,62 @@ const AgentName: React.FC = () => {
   );
 };
 
+const AgentDomainSection: React.FC = () => {
+  const { formData, setFormData } = useAgentStore();
+  const [selectedDomain, setSelectedDomain] = useState<AiAgentDomain>(
+    formData.domain
+  );
+  useEffect(() => {
+    setFormData({ domain: selectedDomain });
+  }, [selectedDomain, setFormData]);
+
+  const handleSelectDomainChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedDomain(e.target.value as AiAgentDomain);
+  };
+ 
+  return (
+    <div className="rounded-lg bg-white p-2 h-40 flex flex-col gap-4">
+      <div>
+        <h3 className="font-semibold text-sm tracking-wide">
+          Choose a Domain for your agent
+        </h3>
+        <p className="text-xs tracking-wide text-gray-500">
+          Specify the domain of the agent. E.g., Sales, Marketing, Research,
+          etc.
+        </p>
+      </div>
+      <div className="rounded-lg border p-2 text-sm">
+        <select
+          onChange={handleSelectDomainChange}
+          className="w-full bg-white font-bold"
+          name="domain"
+          value={selectedDomain}
+        >
+          <option disabled value="">
+            Select a domain...
+          </option>
+          {Object.values(AiAgentDomain).map((domain) => (
+            <option key={domain} value={domain}>
+              {domain}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+};
+
 const LLMSection: React.FC = () => {
   const { formData, setFormData } = useAgentStore();
-  const [selectedLLM, setSelectedLLM] = useState<string>(formData.llm);
+  const [selectedLLM, setSelectedLLM] = useState<LlmModel>(formData.llm);
   useEffect(() => {
     setFormData({ llm: selectedLLM });
   }, [selectedLLM, setFormData]);
 
   const handleSelectLLMChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
-    setSelectedLLM(e.target.value);
+    setSelectedLLM(e.target.value as LlmModel);
   };
 
   return (
@@ -95,7 +149,7 @@ const LLMSection: React.FC = () => {
           GPT3.5
         </p>
       </div>
-      <div className="rounded-lg border p-2">
+      <div className="rounded-lg border p-2 text-sm">
         <select
           onChange={handleSelectLLMChange}
           className=" w-full bg-white font-bold"
@@ -103,8 +157,15 @@ const LLMSection: React.FC = () => {
           defaultValue={selectedLLM}
         >
           <option disabled>Select a model...</option>
-          <option value="GPT3.5">GPT3.5</option>
-          <option value="GPT4">GPT4</option>
+          <option value="GPT3_5">GPT3.5 (OPENAI)</option>
+          <option value="GPT3_5_16_K">GPT3.5 16K (OPENAI)</option>
+          <option value="GPT3_5_1106">GPT3.5 1106 (OPENAI)</option>
+          <option value="GPT4">GPT4 (OPENAI)</option>
+          <option value="GPT4_32K_0613"> GPT4 32K 0613 (OPENAI)</option>
+          <option value="GPT4_0613">GPT4 0613 (OPENAI)</option>
+          <option value="GPT4_TURBO_1106">GPT4 TURBO 1106(OPENAI)</option>
+          <option value="GPT4_TURBO_0125"> GPT4 TURBO 0125 (OPENAI)</option>
+          <option value="FIREWORKS">FIREWORKS AI FUNCTION CALLING 34B</option>
         </select>
       </div>
     </div>
@@ -510,6 +571,7 @@ const AgentDescriptionSection: React.FC = () => {
   return (
     <div className=" flex flex-col gap-4">
       <AgentName />
+      <AgentDomainSection />
       <LLMSection />
       <AgentTriggerSection />
       <AgentTeamSection />
@@ -661,9 +723,51 @@ const NewAgent = () => {
   const router = useRouter();
   const params = useParams<{ accountId: string; userId: string }>();
   const [showToolModal, setShowToolModal] = useState<boolean>(false);
+  const { formData } = useAgentStore();
+  const [createAgentMutation] = useCreateAgentMutation();
 
   const cancelCreateAgent = () => {
     router.push(`/agents/${params.accountId}/${params.userId}/create`);
+  };
+
+  const createNewAgent = async () => {
+    // const selectedTools = formData.tools.map(toolObject => ToolType[toolObject.tool])
+
+    const newAgentData: CreateAgentInput = {
+      name: formData.agentName,
+      description: formData.agentDescription,
+      domain: formData.domain,
+      instruction: formData.agentInstruction,
+      model: formData.llm,
+      useTemplate: true,
+      welcomeMessage: formData.welcomeMessage,
+    };
+
+    const response = await createAgent(newAgentData);
+    if (response?.id) {
+      const agentId = response.id;
+      console.log({ agentId });
+      router.push(`/agents/${params.accountId}/${params.userId}/${agentId}`);
+    } else {
+      console.error("Error creating a new agent");
+    }
+  };
+
+  const createAgent = async (agent: CreateAgentInput) => {
+    try {
+      const { data } = await createAgentMutation({
+        variables: {
+          data: {
+            ...agent,
+          },
+        } as CreateAgentMutationVariables,
+      });
+      if (data?.createAgent) {
+        return data.createAgent;
+      }
+    } catch (error) {
+      console.error("Error creating a new agent: ", error);
+    }
   };
 
   const openToolModal = () => {
@@ -684,7 +788,10 @@ const NewAgent = () => {
           >
             Cancel
           </button>
-          <button className="bg-blue-500 pt-2 pb-2 font-semibold text-white rounded-md w-40">
+          <button
+            onClick={createNewAgent}
+            className="bg-blue-500 pt-2 pb-2 font-semibold text-white rounded-md w-40"
+          >
             Create Agent <span className="ml-1">&gt;</span>
           </button>
         </div>

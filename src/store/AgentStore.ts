@@ -1,7 +1,9 @@
+import { AiAgentDomain, ToolType, LlmModel } from 'src/GraphQLComponents';
 import { create } from 'zustand';
 export interface Tool {
   name: string;
   icon: React.ElementType;
+  tool: ToolType;
 }
 export interface AgentBasicSettings {
   addLabel: boolean;
@@ -13,7 +15,8 @@ export interface AgentBasicSettings {
 export interface AgentData extends AgentBasicSettings {
   agentName: string;
   agentDescription: string;
-  llm: string;
+  domain: AiAgentDomain;
+  llm: LlmModel;
   agentInstruction: string;
   welcomeMessage: string;
   taskName:string;
@@ -30,7 +33,8 @@ const useAgentStore = create<AgentStore>((set) => ({
   formData: {
     agentName: "",
     agentDescription: "",
-    llm: " GPT3.5",
+    domain: AiAgentDomain.Assistant,
+    llm: LlmModel.Gpt3_5,
     labels: [],
     tools: [],
     addLabel: false,
